@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="../static/bootstrap.min.css" type="text/css">
+    <script type="text/javascript" src="../static/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#target').submit(function () {
+                var username = $("#username").val();
+                var password = $("#password").val();
+
+                $.ajax({
+                    url: "http://127.0.0.1:5000/api/login/",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        'username': username,
+                        'password': password
+                    }),
+                    method: "GET",
+                    dataType: "json",
+                    crossDomain: true,
+                    headers: {
+                        'Authorization' : 'Basic ' + btoa(username + ':' + password)
+                    },
+                    success: function(resp) {
+                        if (resp.role_id == '2') {
+                            alert('login success!');
+                            console.log("success");
+                            localStorage.setItem('token', resp.token);
+                            localStorage.setItem('role_id', resp.role_id);
+                            localStorage.setItem('public_id', resp.public_id);
+                            localStorage.setItem('auth_id', 'Basic ' + btoa(username + ':' + password));
+                            window.location.href='/visitor/landing';
+                        }
+                        if (resp.role_id == '1') {
+                            alert('login success!');
+                            console.log("success");
+                            localStorage.setItem('token', resp.token);
+                            localStorage.setItem('role_id', resp.role_id);
+                            localStorage.setItem('public_id', resp.public_id);
+                            localStorage.setItem('auth_id', 'Basic ' + btoa(username + ':' + password));
+                            window.location.href='/clerk/landing';
+
+                        }
+                        if (resp.role_id == '0') {
+                            alert('login success!');
+                            console.log("success");
+                            localStorage.setItem('token', resp.token);
+                            localStorage.setItem('role_id', resp.role_id);
+                            localStorage.setItem('public_id', resp.public_id);
+                            localStorage.setItem('auth_id', 'Basic ' + btoa(username + ':' + password));
+                            window.location.href='/admin/landing';
+                        }
+                    },
+                    error: function () {
+                        console.log('error');
+                        alert('Credentials invalid!');
+                        window.location.href='/login';
+                    },
+                    complete: function (jqXHR) {
+                        if (jqXHR.status == '401') {
+                            console.log(jqXHR.status)
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<form id="target" class="form-signin" method="POST" action="{{ url_for('login') }}">
+    <h3 class="form-signin-heading">Sign in here</h3>
+    <input class="form-control" type="text" required name="username" id="username" placeholder="Username">
+    <input class="form-control" type="password" required name="password" id="password" placeholder="Password">
+
+    <input type="submit" name="Login" value="Login" id="btn" class="btn btn-info btn-block">
+</form>
+
+</body>
+</html>
