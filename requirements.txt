@@ -32,8 +32,6 @@ Flask-HTTPAuth==3.2.3
 Flask-Jsonpify==1.5.0
 Flask-Login==0.4.1
 Flask-LoginManager==1.1.6
-flask-marshmallow==0.8.0
-Flask-MySQL==1.4.0
 Flask-PyMongo==0.5.1
 Flask-RESTful==0.3.6
 Flask-Restless==0.17.0
