@@ -12,7 +12,7 @@ class User(db.Model):
     lastname = db.Column(db.String(30))
     age = db.Column(db.String(5))
     contact = db.Column(db.String(15))
-    address = db.Column(db.Text(255))
+    address = db.Column(db.TEXT())
     birthday = db.Column(db.DATE)
     prisoner = db.Column(db.String(60))
     role_id=db.Column(db.String(2))
@@ -24,7 +24,7 @@ class Comment(db.Model):
     __tablename__ = 'comment'
     id = db.Column(db.Integer(), primary_key=True)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    content = db.Column(db.Text(256))
+    content = db.Column(db.Text())
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 class Prisoner(db.Model):

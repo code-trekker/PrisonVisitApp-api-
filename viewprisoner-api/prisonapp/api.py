@@ -155,6 +155,7 @@ def get_prisoners(current_user):
 
 
 #START OF ADMIN API
+'''
 @app.route('/api/addprisoner', methods=['POST'])
 def add_prisoner():
     data = request.get_json()
@@ -165,3 +166,4 @@ def add_prisoner():
     db.session.commit()
 
     return jsonify({'message':'Added successfully!'})[]
+'''
