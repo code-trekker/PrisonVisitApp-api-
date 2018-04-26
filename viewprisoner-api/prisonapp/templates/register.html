@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link type="text/css" rel="stylesheet" href="../static/bootstrap.min.css">
+    <script type="text/javascript" src="../static/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#target').submit(function () {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var firstname = $("#firstname").val();
+                var middlename = $("#middlename").val();
+                var lastname = $("#lastname").val();
+                var age = document.getElementById('age').innerHTML;
+                var contact = $("#contact").val();
+                var address = $("#address").val();
+                var birthday = $("#birthday").val();
+                var prisoner = $("#prisoner").val();
+
+                $.ajax({
+                    url: "http://127.0.0.1:5000/api/register",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        'username':username,
+                        'password':password,
+                        'firstname':firstname,
+                        'middlename':middlename,
+                        'lastname':lastname,
+                        'age':age,
+                        'contact':contact,
+                        'address':address,
+                        'birthday':birthday,
+                        'prisoner':prisoner
+                    }),
+                    method: "POST",
+                    dataType: "json",
+                    crossDomain: true,
+                    success: function () {
+                        console.log("success");
+                        alert("registration success!");
+                        window.location.replace("login.html")
+                    },
+                    error: function () {
+                        console.log('error')
+                    },
+                    complete: function (jqXHR) {
+                        if (jqXHR.status == '401') {
+                            console.log(jqXHR.status)
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+    <script>
+        function submitBday() {
+                var Q4A = "";
+                var Bdate = document.getElementById('birthday').value;
+                var Bday = +new Date(Bdate);
+                Q4A += "" + ~~ ((Date.now() - Bday) / (31557600000));
+                var theBday = document.getElementById('age');
+                var age = theBday.innerHTML = Q4A;
+            }
+    </script>
+</head>
+
+
+<body>
+    <h1>Registration</h1><br>
+
+    <h3>Register here!</h3>
+
+    <form id="target" class="form-signin" method="POST">
+    <input class="form-control" type="text" required id="username" placeholder="Username">
+    <input class="form-control" type="password" required id="password" placeholder="Password">
+    <input class="form-control" type="text" required id="firstname" placeholder="First Name">
+    <input class="form-control" type="text" required id="middlename" placeholder="Middle Name">
+    <input class="form-control" type="text" required id="lastname" placeholder="Last Name"><br>
+    <input class="form-control" type="text" required id="contact" placeholder="Contact Number">
+    <input class="form-control" type="text" required id="address" placeholder="Address">
+    <label for="birthday">Birthday</label>
+    <input class="form-control" type="date" required id="birthday" onchange="submitBday()">
+    <p id="age"></p>
+    <p>which prisoner are you related to?</p>
+    <input class="form-control" type="text" required id="prisoner" placeholder="Prisoner Name"><br>
+
+    <input type="submit" name="Register" value="Register" id="btn" class="btn btn-info btn-block">
+    </form>
+
+</body>
+</html>

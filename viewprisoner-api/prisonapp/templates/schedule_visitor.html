@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Visit</title>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap.min.css">
+    <script src="../static/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#target').submit(function () {
+                var nameP = $("#nameP").val();
+                var vDate = $("#vDate").val();
+                var numV = $("#numV").val();
+                var tokens = localStorage.getItem('token');
+                var pub = localStorage.getItem('public_id');
+                $.ajax({
+                    url: "http://127.0.0.1:5000/api/user/visitation",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        'nameP':nameP,
+                        'vDate':vDate,
+                        'numV':numV,
+                        'public_id':pub
+                    }),
+                    method: "POST",
+                    dataType: "json",
+                    crossDomain: true,
+                    headers: {
+                        'x-access-token': tokens
+                    },
+                    success: function (resp) {
+                        alert(resp.message);
+                        window.location.href='/visitor/landing'
+                    },
+                    error: function () {
+                        alert('server error! click ok to reload!');
+                        window.location.href='/visitor/schedule'
+
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <h1>Scheduling</h1>
+    <form id="target" class="form-signin" method="POST" style="width: 50%">
+        <label for="vDate">Date of Visitation</label>
+        <input class="form-control" id="vDate" type="date" required>
+        <input class="form-control" type="text" id="nameP" placeholder="Prisoner's Name" required><br>
+        <label for="numV">Number of Visitors</label>
+            <select id="numV" required>
+                <option value="" selected disabled hidden>Choose here</option>
+                <option value="1">1 (Alone)</option>
+                <option value="2">2 </option>
+                <option value="3">3 </option>
+            </select>
+        <input type="submit" name="Submit" value="Submit" id="btn" class="btn btn-info btn-block">
+    </form>
+</body>
+</html>

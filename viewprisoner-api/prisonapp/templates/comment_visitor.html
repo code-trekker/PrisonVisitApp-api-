@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post a comment</title>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap.min.css">
+    <script src="../static/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#submit').click(function () {
+                var comment = $("#comment").val();
+                var tokens = localStorage.getItem('token');
+                var pub = localStorage.getItem('public_id');
+                $.ajax({
+                    url: "http://127.0.0.1:5000/api/user/comment",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        'comment':comment,
+                        'public_id':pub
+                    }),
+                    method: "POST",
+                    dataType: "json",
+                    crossDomain: true,
+                    headers: {
+                        'x-access-token': tokens
+                    },
+                    success: function (resp) {
+                        alert(resp.message);
+                        window.location.href='/visitor/landing'
+                    },
+                    error: function () {
+                        alert('server error! click ok to reload!');
+                        window.location.href='/visitor/comments'
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <h1>Post a comment below</h1><br><br>
+    <input class="form-control" id="comment" type="text" placeholder="Enter comment here" style="width: 50%; height: 100px"><br>
+    <input type="button" name="Submit" value="Submit" id="submit" class="btn btn-info btn-block" style="width: 50%;">
+</body>
+</html>
