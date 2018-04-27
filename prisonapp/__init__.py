@@ -25,8 +25,9 @@ db = SQLAlchemy(app)
 import prisonapp.api
 
 
+
 def createDB():
-    engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:sw33t890@localhost') #connects to server
+    engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:1234@localhost') #connects to server
     conn = engine.connect()
     conn.execute("commit")
     conn.execute("create database prisonapp")

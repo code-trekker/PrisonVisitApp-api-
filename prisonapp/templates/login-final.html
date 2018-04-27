@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BJMP - Iligan</title>
+
+    <link rel="shortcut icon" href="../static/img/icon.ico" type="image/x-icon"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/agency.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/montserrat.css" rel="stylesheet" type="text/css">
+    <link href='../static/css/kaushan.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/droidserif.css' rel='stylesheet'
+          type='text/css'>
+    <link href='../static/css/robotoslab.css' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="../static/jquery-3.3.1.min.js"></script>
+    <!-- Custom styles for this template -->
+    <link href="../static/css/agency.min.css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            $('#signup').submit(function () {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var firstname = $("#firstname").val();
+                var middlename = $("#middlename").val();
+                var lastname = $("#lastname").val();
+                var age = document.getElementById('age').innerHTML;
+                var contact = $("#number").val();
+                var address = $("#address").val();
+                var birthday = $("#birthday").val();
+                var prisoner = $("#prisoner").val();
+
+                $.ajax({
+                    url: "http://127.0.0.1:5000/api/register",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        'username': username,
+                        'password': password,
+                        'firstname': firstname,
+                        'middlename': middlename,
+                        'lastname': lastname,
+                        'age': age,
+                        'contact': contact,
+                        'address': address,
+                        'birthday': birthday,
+                        'prisoner': prisoner
+                    }),
+                    method: "POST",
+                    dataType: "json",
+                    crossDomain: true,
+                    success: function () {
+                        console.log("success");
+                        alert("registration success!");
+                        window.location.href = '/'
+                    },
+                    error: function () {
+                        console.log('error')
+                    },
+                    complete: function (jqXHR) {
+                        if (jqXHR.status == '401') {
+                            console.log(jqXHR.status)
+                        }
+                    }
+                })
+            });
+            $('#login').submit(function () {
+                var username = $("#uusername").val();
+                var password = $("#ppassword").val();
+
+                $.ajax({
+                    url: "http://127.0.0.1:5000/api/login/",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        'username': username,
+                        'password': password
+                    }),
+                    method: "GET",
+                    dataType: "json",
+                    crossDomain: true,
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(username + ':' + password)
+                    },
+                    success: function (resp) {
+                        if (resp.role_id == '2') {
+                            alert('login success!');
+                            console.log("success");
+                            localStorage.setItem('token', resp.token);
+                            localStorage.setItem('role_id', resp.role_id);
+                            localStorage.setItem('public_id', resp.public_id);
+                            localStorage.setItem('auth_id', 'Basic ' + btoa(username + ':' + password));
+                            window.location.href = '/visitor/landing';
+                        }
+                        if (resp.role_id == '1') {
+                            alert('login success!');
+                            console.log("success");
+                            localStorage.setItem('token', resp.token);
+                            localStorage.setItem('role_id', resp.role_id);
+                            localStorage.setItem('public_id', resp.public_id);
+                            localStorage.setItem('auth_id', 'Basic ' + btoa(username + ':' + password));
+                            window.location.href = '/clerk/landing';
+                        }
+                    },
+                    error: function () {
+                        console.log('error');
+                        alert('Credentials invalid!');
+                        window.location.href = '/';
+                    },
+                    complete: function (jqXHR) {
+                        if (jqXHR.status == '401') {
+                            console.log(jqXHR.status)
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+    <script>
+        function submitBday() {
+            var Q4A = "";
+            var Bdate = document.getElementById('birthday').value;
+            var Bday = +new Date(Bdate);
+            Q4A += "" + ~~((Date.now() - Bday) / (31557600000));
+            var theBday = document.getElementById('age');
+            var age = theBday.innerHTML = Q4A;
+        }
+    </script>
+
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">BJMP</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#page-top">Sign In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#portfolio">Rules & Regulations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#team">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#contact">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Header -->
+<header class="masthead">
+    <div class="container">
+        <div class="intro-text">
+            <div class="intro-lead-in">Welcome!</div>
+            <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" data-toggle="modal"
+               data-target="#squarespaceModal">Sign In</a>
+        </div>
+    </div>
+</header>
+
+<div class="signin-modal modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="section-heading text-uppercase">Login</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">Close</span></button>
+            </div>
+
+            <div class="modal-body">
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-8 col-md-12  col-md-offset-12">
+                            <form name="login" id="login" method="post" action="{{ url_for('login') }}">
+                                <div class="form-group">
+                                    <input type="text" name="username" id="uusername" tabindex="1" class="form-control"
+                                           placeholder="Username" value="">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" id="ppassword" tabindex="2"
+                                           class="form-control" placeholder="Password">
+                                </div>
+                                {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                <ul class=flashes>
+                                    {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                {% endwith %}
+                                <div class="form-group">
+                                    <input type="submit" name="login" class="btn btn-lg btn-primary btn-block"
+                                           value="Sign in">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Portfolio Grid -->
+<section class="bg-light" id="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Rules & Regulations</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 portfolio-item">
+                <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+                    <div class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                            <i class="fa fa-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="../static/img/portfolio/11.jpg" alt="">
+                </a>
+                <div class="portfolio-caption">
+                    <h4>Vision and Mission</h4>
+                    <!--<p class="text-muted">Illustration</p>-->
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 portfolio-item">
+                <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
+                    <div class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                            <i class="fa fa-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="../static/img/portfolio/00.jpg" alt="">
+                </a>
+                <div class="portfolio-caption">
+                    <h4>Do's</h4>
+                    <!--<p class="text-muted">Graphic Design</p>-->
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-8 portfolio-item">
+                <a class="portfolio-link" data-toggle="modal" href="#portfolioModal3">
+                    <div class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                            <i class="fa fa-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="../static/img/portfolio/22.jpg" alt="">
+                </a>
+                <div class="portfolio-caption">
+                    <h4>Dont's</h4>
+                    <!--<p class="text-muted">Identity</p>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About -->
+<section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">About BJMP</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../static/img/about/11.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <!--<h4>2009-2011</h4>-->
+                                <h4 class="subheading">Our Humble Beginnings</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">Iligan City Jail is located at Brgy. Tipanoy, Iligan City. This
+                                    correctional facility has been
+                                    managed by the Bureau of Jail Management and Penology under the flagship of the
+                                    Department of Interior and Local
+                                    Government which is a national government office.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../static/img/about/22.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <!--<h4>March 2011</h4>-->
+                                <h4 class="subheading">An Agency is Born</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">The said jail has a total population of 308 inmates as of the
+                                    month of October 2010
+                                    and it has a workforce of 36 jail guards. It’s main facility is a two story building
+                                    consisting 16 cells
+                                    for male inmates while the 22 female inmates are housed separately in just one cell.
+                                    Also inside the perimeter,
+                                    it has a basketball court, a meeting hall, visitor’s reception hall, dirty kitchen,
+                                    and a small backyard garden.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../static/img/about/33.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <!--<h4>December 2012</h4>-->
+                                <h4 class="subheading">Transition to Full Service</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">Iligan City Jail was recognized and awarded as the “Best City
+                                    Jail” in Northern Mindanao last 2010.
+                                    The facilities and amenities of the jail greatly improved. Sanitation, ventilation
+                                    and water supply problems were given remedies.
+                                    Playground has now concreted; walls are now elevated, barbed and fortified. the city
+                                    government also deployed three nurses to attend the health needs of the inmates.
+                                    Also, the new warden already submitted a budget proposal to the City Budget
+                                    Office. </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../static/img/about/000.PNG" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <!--<h4>July 2014</h4>-->
+                                <h4 class="subheading">Phase Two Expansion</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">Its morale is currently high seeing a brighter hope in running the
+                                    jail with a
+                                    strong partnership of Iligan City Government and its constituents.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!--<li class="timeline-inverted">-->
+                    <!--<div class="timeline-image">-->
+                    <!--<h4>Know More-->
+                    <!--<br>About-->
+                    <!--<br>BJMP</h4>-->
+                    <!--</div>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+<section class="bg-light" id="team">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/lee.jpg" alt="">
+                    <h4>Lee</h4>
+                    <p class="text-muted">Back End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/lance.jpg" alt="">
+                    <h4>Lance</h4>
+                    <p class="text-muted">Back End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/reign.jpg" alt="">
+                    <h4>Reign</h4>
+                    <p class="text-muted">Back End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/dustin.JPG" alt="">
+                    <h4>Dustin</h4>
+                    <p class="text-muted">Back End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/jera.jpg" alt="">
+                    <h4>Jera</h4>
+                    <p class="text-muted">Front End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/loyen.jpg" alt="">
+                    <h4>Loyen</h4>
+                    <p class="text-muted">Front End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/fay.jpg" alt="">
+                    <h4>Fay</h4>
+                    <p class="text-muted">Front End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/johnrich.jpg" alt="">
+                    <h4>Johnrich</h4>
+                    <p class="text-muted">Front End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/emman.jpg" alt="">
+                    <h4>Emman</h4>
+                    <p class="text-muted">Front End Developer</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="../static/img/team/chezl.jpg" alt="">
+                    <h4>Chezl</h4>
+                    <p class="text-muted">Project Manager</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sign up -->
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Sign Up Now!</h2>
+                <h3 class="section-subheading text-muted">Registration form for Visitors.</h3>
+            </div>
+        </div>
+        <div class="container">
+            <form style="margin: 0 auto; width:400px;" id="signup">
+                <div class="form-group">
+                    <label class="section-subheading text-primary"><i class="fa fa-user-circle"> </i> Username</label>
+                    <p><input type="text" class="form-control" id="username" placeholder="Enter username"></p>
+
+                    <label class="section-subheading text-primary"><i class="fa fa-lock"></i> Password</label>
+                    <p><input type="password" class="form-control" id="password" placeholder="Enter password"></p>
+
+                    <label class="section-subheading text-primary"><i class="fa fa-user"></i> First Name</label>
+                    <p><input type="text" class="form-control" id="firstname" placeholder="Enter first name"></p>
+
+                    <label class="section-subheading text-primary"><i class="fa fa-user"></i> Middle Name</label>
+                    <p><input type="text" class="form-control" id="middlename" placeholder="Enter middle name"></p>
+
+                    <label class="section-subheading text-primary"><i class="fa fa-user"></i> Last Name</label>
+                    <p><input type="text" class="form-control" id="lastname" placeholder="Enter last name"></p>
+
+                    <div>
+                        <label class="section-subheading text-primary"><i class="fa fa-calendar"></i> Date of
+                            Birth</label>
+                        <p><input type="date" class="form-control" id="birthday" placeholder="Date of Birth"
+                                  onchange="submitBday()"></p>
+                    </div>
+                    <p hidden id="age"></p>
+
+                    <label class="section-subheading text-primary"><i class="fa fa-address-card"></i> Address</label>
+                    <p><input type="text" class="form-control" id="address" placeholder="Enter address"></p>
+
+                    <label class="section-subheading text-primary"><i class="fa fa-phone-square"></i> Contact
+                        Number</label>
+                    <p><input type="text" class="form-control" id="number" placeholder="Enter contact number"></p>
+
+                    <label class="section-subheading text-primary"><i class="fa fa-user"></i> Related to which prisoner?</label>
+                    <p><input type="text" class="form-control" id="prisoner" placeholder="Enter name"></p>
+
+                </div>
+                <center><input type="submit" class="btn btn-primary" name="Register" value="Register" id="btn"></center>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Modals -->
+
+<!-- Modal 1 Vission Mission-->
+<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2 class="text-uppercase">MISSION</h2>
+                            <!-- <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p> -->
+                            <!--<img class="img-fluid d-block mx-auto" src="img/portfolio/01-full.jpg" alt="">-->
+                            <p>To enhance public safety by ensuring humane safekeeping and development of Persons
+                                Deprived of Liberty (PDL) in all district, city, and municipal jails for their
+                                integration to society.</p>
+                            <h2 class="text-uppercase">VISION</h2>
+                            <!-- <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p> -->
+                            <!--<img class="img-fluid d-block mx-auto" src="img/portfolio/01-full.jpg" alt="">-->
+                            <p>A premier institution highly regarded by society for the secure and humane treatment of
+                                Persons Deprived of Liberty (PDL) by its competent and motivated corps.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2 DO's-->
+<div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2 class="text-uppercase">INSTRUCTIONS AND PERMISSIBLE INSIDE THE JAIL</h2>
+                            <p class="item-intro text-muted">Please read the details below before visiting the jail.</p>
+                            <!--<img class="img-fluid d-block mx-auto" src="img/portfolio/02-full.jpg" alt="">-->
+                            <h4>Security</h4>
+                            <ul class="list-inline">
+                                <li>• A valid ID is checked upon entering.</li>
+                                <li>• They check the food you bring.</li>
+                                <li>• Do a body search</li>
+                            </ul>
+                            <h5>Further instructions and information</h5>
+                            <ul class="list-inline">
+                                <li>• Start visition time every Tuesday and Friday is 12PM</li>
+                                <li>• No visitation is allowed every Monday but the visitor can bring food for his
+                                    related prisoner.
+                                </li>
+                                <li>• Saturday and Sunday is Family Day and visitation starts at 8am.</li>
+                                <li>• Children below 13 years old are only allowed to get inside during Family Day of
+                                    the inmate together with his/her legal guardian.
+                                </li>
+                                <li>• During Family Day, only those who are a direct family member of the inmate are
+                                    only allowed to get inside the jail (maximum of 3 persons).
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 3 DONT's-->
+<div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2 class="text-uppercase">PROHIBITED INSIDE THE JAIL</h2>
+                            <p class="item-intro text-muted">Please read the details below before visiting the jail.</p>
+                            <!--<img class="img-fluid d-block mx-auto" src="img/portfolio/03-full.jpg" alt="">-->
+                            <h4>Clothing</h4>
+                            <ul class="list-inline">
+                                <li>• Yellow, orange, and camouflage clothes are not allowed to be worn by visitors.
+                                </li>
+                                <li>• Sleeveless, tops, shorts, skirts and other revealing clothes.</li>
+                                <li>• Jackets, caps, bonnets and shades.</li>
+                            </ul>
+                            <h4>Electronic devices are not allowed inside the jail.</h4>
+                            <br>
+                            <h4>Food</h4>
+                            <ul class="list-inline">
+                                <li>• Canned goods, bulad, ginamos and uyap.</li>
+                            </ul>
+                            <h4>Belongings</h4>
+                            <ul class="list-inline">
+                                <li>• Stainless things like spoon, fork and knife.</li>
+                                <li>• Fragile and other things that are easily to break.</li>
+                                <li>• Bottled colognes and perfumes (spray and pressurized container)</li>
+                                <li>• Knife, scissors, ice pick, swiss knife and other sharp things.</li>
+                            </ul>
+                            <h4>Firearms and explosive devices.</h4>
+                            <br>
+                            <h4>Drugs and Beverages</h4>
+                            <ul class="list-inline">
+                                <li>• Shabu, cocaine, marijuana and other forbidden drugs.</li>
+                                <li>• Cigarettes and alcoholic beverages.</li>
+                            </ul>
+                            <h6>More instructions:</h6>
+                            <ul class="list-inline">
+                                <li>• A person who is drunk or had taken alcoholic beverages upon the day of visiting is
+                                    not allowed to get inside the jail.
+                                </li>
+                            </ul>
+
+
+                            <!--<button class="btn btn-primary" data-dismiss="modal" type="button">-->
+                            <!--<i class="fa fa-times"></i>-->
+                            <!--Close Project</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript -->
+<script src="../static/vendor/jquery/jquery.min.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Contact form JavaScript -->
+<script src="../static/js/jqBootstrapValidation.js"></script>
+<script src="../static/js/contact_me.js"></script>
+
+<!-- Custom scripts for this template -->
+<script src="../static/js/agency.min.js"></script>
+
+</body>
+
+</html>
