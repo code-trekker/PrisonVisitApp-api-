@@ -96,6 +96,40 @@ def get_all_users(current_user):
 
     users = User.query.all()
     output = []
+<<<<<<< HEAD
+
+    for user in users:
+        user_data = {}
+        user_data['username'] = user.username
+        output.append(user_data)
+
+    return jsonify({ 'users':output })
+
+@app.route('/api/clerk/visitor_data', methods=['GET'])
+@token_required
+def get_visitors(current_user):
+    if current_user.role_id == '2':
+        return jsonify ({'message':'Cannot perform that function!'})
+
+    users = User.query.filter_by(role_id=str(2))
+
+    res = []
+
+    for user in users:
+        user_data = {}
+        user_data['firstname'] = user.firstname
+        user_data['middlename'] = user.middlename
+        user_data['lastname'] = user.lastname
+        user_data['age'] = user.age
+        user_data['contact'] = user.contact
+        user_data['address'] = user.address
+        user_data['birthday'] = user.birthday
+        user_data['status'] = user.status
+        user_data['id'] = user.id
+        res.append(user_data)
+
+    return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
+=======
 
     for user in users:
         user_data = {}
@@ -129,6 +163,22 @@ def get_visitors(current_user):
 
     return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
 
+
+@app.route('/api/clerk/account_accept', methods=['POST'])
+@token_required
+def accept(current_user):
+    data = request.get_json()
+    user = User.query.filter_by(id=data['user_id']).first()
+    if str(data['response']) == 'yes':
+        user.status = True
+        db.session.commit()
+        return jsonify({'message':'Account Verified!'})
+>>>>>>> Confirm-Registration-Request-Api
+
+    elif str(data['response']) == 'no':
+        user.status = False
+        db.session.commit()
+        return jsonify({'message':'Account Declined!'})
 
 
 

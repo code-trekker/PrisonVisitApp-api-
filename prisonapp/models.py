@@ -12,7 +12,11 @@ class User(db.Model):
     lastname = db.Column(db.String(30))
     age = db.Column(db.String(5))
     contact = db.Column(db.String(15))
+<<<<<<< HEAD
     address = db.Column(db.TEXT())
+=======
+    address = db.Column(db.Text())
+>>>>>>> Confirm-Registration-Request-Api
     birthday = db.Column(db.DATE)
     prisoner = db.Column(db.String(60))
     role_id=db.Column(db.String(2))
@@ -44,9 +48,5 @@ class Visitation(db.Model):
     vId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     nameP = db.Column(db.String(36), nullable=False)
     date = db.Column(db.DATE, nullable=False)
-    relationship = db.Column(db.String(20))
-    time = db.Column(db.String(20))
     numberOfVisitors = db.Column(db.Integer(), nullable=False)
     status = db.Column(db.String(20),nullable=False)
-
-
