@@ -10,10 +10,10 @@ from datetime import date
 
 
 app = Flask(__name__)
-
+server = Flask(__name__)
 
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:1234@localhost/prisonapp'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:sw33t890@localhost/prisonapp'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['USE_SESSION_FOR_NEXT'] = True
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -25,9 +25,8 @@ db = SQLAlchemy(app)
 import prisonapp.api
 
 
-
 def createDB():
-    engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:1234@localhost') #connects to server
+    engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:sw33t890@localhost') #connects to server
     conn = engine.connect()
     conn.execute("commit")
     conn.execute("create database prisonapp")
