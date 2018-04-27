@@ -130,21 +130,6 @@ def get_visitors(current_user):
     return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
 
 
-@app.route('/api/clerk/account_accept', methods=['POST'])
-@token_required
-def accept(current_user):
-    data = request.get_json()
-    user = User.query.filter_by(id=data['user_id']).first()
-    if str(data['response']) == 'yes':
-        user.status = True
-        db.session.commit()
-        return jsonify({'message':'Account Verified!'})
-
-    elif str(data['response']) == 'no':
-        user.status = False
-        db.session.commit()
-        return jsonify({'message':'Account Declined!'})
-
 
 
 #END OF CLERK API
