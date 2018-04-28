@@ -1,6 +1,11 @@
 from prisonapp import *
+<<<<<<< HEAD
 from models import User, Comment, Visitation
 from models import User, Comment, Visitation, Prisoner
+=======
+from models import User, Comment, Visitation, Announcements
+
+>>>>>>> Manage-Announcements
 
 def token_required(f):
     @wraps(f)
@@ -186,6 +191,17 @@ def visitors():
     db.session.commit()
 
     return jsonify({'message':'Visitor verified'})
+
+@app.route('/announcements/', methods=['POST'])
+def announcements():
+    data = request.get_json()
+
+    newAnnouncement = Announcements(aid=data['aid'],title=data['title'], announcement=data['announcement'], date=datetime.datetime.now())
+    db.session.add(newAnnouncement)
+    db.session.commit()
+
+    return jsonify({'message':'Announcement successfully added!'})
+
 
 
 
