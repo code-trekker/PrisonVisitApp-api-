@@ -24,11 +24,17 @@ db = SQLAlchemy(app)
 
 import prisonapp.api
 #import prisonapp.server
+<<<<<<< HEAD
+=======
+
+>>>>>>> view-prisoner-data-api
 
 def createDB():
     engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:1234@localhost') #connects to server
     conn = engine.connect()
     conn.execute("commit")
+    #engine.execute("CREATE DATABASE IF NOT EXISTS sample") #create db
+    #engine.execute("USE sample") # select new
     conn.execute("create database prisonapp")
     conn.close()
 
