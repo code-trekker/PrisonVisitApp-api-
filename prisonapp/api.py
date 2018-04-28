@@ -1,5 +1,5 @@
 from prisonapp import *
-from models import User, Comment, Visitation
+from models import User, Comment, Visitation, Announcements
 
 
 def token_required(f):
@@ -92,6 +92,17 @@ def post_comment(current_user):
     db.session.commit()
 
     return jsonify({'message': 'Comment submitted! Thank you for your opinion!'})
+
+@app.route('/announcements/', methods=['POST'])
+def announcements():
+    data = request.get_json()
+
+    newAnnouncement = Announcements(aid=data['aid'],title=data['title'], announcement=data['announcement'], date=datetime.datetime.now())
+    db.session.add(newAnnouncement)
+    db.session.commit()
+
+    return jsonify({'message':'Announcement successfully added!'})
+
 
 
 # END OF VISITOR API
