@@ -176,30 +176,20 @@ def get_visitors(current_user):
 @app.route('/api/clerk/account_accept', methods=['POST'])
 @token_required
 def accept(current_user):
-    data = request.get_json()
-    user = User.query.filter_by(id=data['user_id']).first()
-    if str(data['response']) == 'yes':
-        user.status = True
-        db.session.commit()
-        return jsonify({'message':'Account Verified!'})
->>>>>>> Confirm-Registration-Request-Api
+	data = request.get_json()
+	user = User.query.filter_by(id=data['user_id']).first()
+	if str(data['response']) == 'yes':
+		user.status = True
+		db.session.commit()
+		return jsonify({'message':'Account Verified!'})
 
-    elif str(data['response']) == 'no':
-        user.status = False
-        db.session.commit()
-        return jsonify({'message':'Account Declined!'})
-
+	elif str(data['response']) == 'no':
+		user.status = False
+		db.session.commit()
+		return jsonify({'message':'Account Declined!'})
 
 
-#END OF CLERK API
-=======
 
-    for user in users:
-        user_data = {}
-        user_data['username'] = user.username
-        output.append(user_data)
-
-    return jsonify({ 'users':output })
 
 @app.route('/api/clerk/visitor_data', methods=['GET'])
 @token_required
