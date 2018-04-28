@@ -1,9 +1,6 @@
 from prisonapp import *
-<<<<<<< HEAD
 from models import User, Comment, Visitation
-=======
 from models import User, Comment, Visitation, Prisoner
->>>>>>> admin-add-clerks-api
 
 def token_required(f):
     @wraps(f)
@@ -36,11 +33,7 @@ def register_user():
     hashed_password = generate_password_hash(data['password'], method='sha256')
 
     new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password_hash=hashed_password, firstname=data['firstname'], middlename=data['middlename'],
-<<<<<<< HEAD
                     lastname=data['lastname'], contact=data['contact'], address=data['address'], birthday=data['birthday'], prisoner=data['prisoner'], role_id=2, status=False,
-=======
-                    lastname=data['lastname'], contact=data['contact'], address=data['address'], birthday=data['birthday'], prisoner=data['prisoner'], role_id=2, status=True,
->>>>>>> admin-add-clerks-api
                     age=data['age'])
     db.session.add(new_user)
     db.session.commit()
@@ -104,8 +97,6 @@ def get_all_users(current_user):
 
     users = User.query.all()
     output = []
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     for user in users:
         user_data = {}
@@ -138,15 +129,8 @@ def get_visitors(current_user):
         res.append(user_data)
 
     return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
-=======
-
-    for user in users:
-        user_data = {}
-        user_data['username'] = user.username
-        output.append(user_data)
-
-    return jsonify({ 'users':output })
-
+	
+	
 @app.route('/api/clerk/visitor_data', methods=['GET'])
 @token_required
 def get_visitors(current_user):
@@ -264,4 +248,3 @@ def add_clerk(current_user):
 
 
 #END OF ADMIN API
->>>>>>> admin-add-clerks-api
