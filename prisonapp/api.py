@@ -174,6 +174,20 @@ def get_prisoners(current_user):
 
 #END OF CLERK API
 
+<<<<<<< HEAD
+=======
+@app.route('/api/user/visitors/', methods=['POST'])
+def visitors():
+    data = request.get_json()
+
+    newVisitor = Visitors(id=data['id'],firstname=data['firstname'], middlename=data['middlename'], lastname=data['lastname'], address=data['address'], contactno=data['contactno'], prisonername=data['prisonername'], date=datetime.datetime.now())
+    db.session.add(newVisitor)
+    db.session.commit()
+
+    return jsonify({'message':'Visitor verified'})
+
+# END OF VISITOR API
+>>>>>>> Record-A-Visitation
 
 #START OF ADMIN API
 
