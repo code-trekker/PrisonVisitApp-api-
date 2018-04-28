@@ -27,7 +27,7 @@ app.secret_key = os.urandom(24)
 db = SQLAlchemy(app)
 
 import prisonapp.api
-
+#import prisonapp.server
 
 def createDB():
 <<<<<<< HEAD
@@ -37,6 +37,8 @@ def createDB():
 >>>>>>> Confirm-Registration-Request-Api
     conn = engine.connect()
     conn.execute("commit")
+    #engine.execute("CREATE DATABASE IF NOT EXISTS sample") #create db
+    #engine.execute("USE sample") # select new
     conn.execute("create database prisonapp")
     conn.close()
 

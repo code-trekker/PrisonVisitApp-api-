@@ -1,5 +1,9 @@
 from prisonapp import *
+<<<<<<< HEAD
 from models import User, Comment, Visitation
+=======
+from models import User, Comment, Visitation, Prisoner
+>>>>>>> admin-add-clerks-api
 
 def token_required(f):
     @wraps(f)
@@ -32,7 +36,11 @@ def register_user():
     hashed_password = generate_password_hash(data['password'], method='sha256')
 
     new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password_hash=hashed_password, firstname=data['firstname'], middlename=data['middlename'],
+<<<<<<< HEAD
                     lastname=data['lastname'], contact=data['contact'], address=data['address'], birthday=data['birthday'], prisoner=data['prisoner'], role_id=2, status=False,
+=======
+                    lastname=data['lastname'], contact=data['contact'], address=data['address'], birthday=data['birthday'], prisoner=data['prisoner'], role_id=2, status=True,
+>>>>>>> admin-add-clerks-api
                     age=data['age'])
     db.session.add(new_user)
     db.session.commit()
@@ -96,6 +104,7 @@ def get_all_users(current_user):
 
     users = User.query.all()
     output = []
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     for user in users:
@@ -183,3 +192,86 @@ def accept(current_user):
 
 
 #END OF CLERK API
+=======
+
+    for user in users:
+        user_data = {}
+        user_data['username'] = user.username
+        output.append(user_data)
+
+    return jsonify({ 'users':output })
+
+@app.route('/api/clerk/visitor_data', methods=['GET'])
+@token_required
+def get_visitors(current_user):
+    if current_user.role_id != '1':
+        return jsonify ({'message':'Cannot perform that function!'})
+
+    users = User.query.filter_by(role_id=2)
+
+    res = []
+
+    for user in users:
+        user_data = {}
+        user_data['firstname'] = user.firstname
+        user_data['middlename'] = user.middlename
+        user_data['lastname'] = user.lastname
+        user_data['age'] = user.age
+        user_data['contact'] = user.contact
+        user_data['address'] = user.address
+        user_data['birthday'] = user.birthday
+        user_data['status'] = user.status
+        res.append(user_data)
+
+    return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
+
+
+@app.route('/api/clerk/prisoner_data', methods=['GET'])
+@token_required
+def get_prisoners(current_user):
+    if current_user.role_id != '1':
+        return jsonify ({'message':'Cannot perform that function!'})
+
+    prisoners = Prisoner.query.all()
+
+    res = []
+
+    for prisoner in prisoners:
+        prisoner_data = {}
+        prisoner_data['firstname'] = prisoner.firstname
+        prisoner_data['middlename'] = prisoner.middlename
+        prisoner_data['lastname'] = prisoner.lastname
+        prisoner_data['birthday'] = prisoner.birthday
+        prisoner_data['age'] = prisoner.age
+        res.append(prisoner_data)
+
+        return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
+
+
+#END OF CLERK API
+
+
+#START OF ADMIN API
+
+@app.route('/api/addclerk', methods=['POST'])
+@token_required
+def add_clerk(current_user):
+    if current_user.role_id != '0':
+        return jsonify ({'message':'Cannot perform that function!'})
+
+    data = request.get_json()
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+
+    new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password_hash=hashed_password,
+                    firstname=data['firstname'], middlename=data['middlename'],
+                    lastname=data['lastname'], contact=data['contact'], address=data['address'],
+                    birthday=data['birthday'], role_id=1, status=True,
+                    age=data['age'])
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'Registered successfully!'})
+
+
+#END OF ADMIN API
+>>>>>>> admin-add-clerks-api

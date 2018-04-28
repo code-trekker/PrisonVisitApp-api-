@@ -30,8 +30,6 @@ class Comment(db.Model):
     uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text())
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    reply = db.Column(db.Text(), nullable=True)
-    dateReplied = db.Column(db.DateTime, nullable=True)
 
 class Prisoner(db.Model):
     __tablename__ = 'prisoner'
