@@ -24,10 +24,6 @@ db = SQLAlchemy(app)
 
 import prisonapp.api
 #import prisonapp.server
-<<<<<<< HEAD
-=======
-
->>>>>>> view-prisoner-data-api
 
 def createDB():
     engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:1234@localhost') #connects to server
