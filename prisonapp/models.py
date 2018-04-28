@@ -44,8 +44,7 @@ class Visitation(db.Model):
     date = db.Column(db.DATE, nullable=False)
     numberOfVisitors = db.Column(db.Integer(), nullable=False)
     status = db.Column(db.String(20),nullable=False)
-<<<<<<< HEAD
-=======
+
 
 
 class Visitors(db.Model):
@@ -59,4 +58,3 @@ class Visitors(db.Model):
     prisonername = db.Column(db.String(60), nullable=False)
     date = db.Column(db.DateTime(), nullable=False)
 
->>>>>>> Record-A-Visitation
