@@ -50,3 +50,14 @@ class Visitation(db.Model):
     status = db.Column(db.String(20),nullable=False)
 
 
+class Visitors(db.Model):
+    __table__name = 'visitors'
+    id = db.Column(db.Integer(), primary_key=True)
+    firstname = db.Column(db.String(60), nullable=False)
+    middlename = db.Column(db.String(60), nullable=False)
+    lastname = db.Column(db.String(60), nullable=False)
+    address = db.Column(db.TEXT())
+    contactno = db.Column(db.String(60), nullable=False)
+    prisonername = db.Column(db.String(60), nullable=False)
+    date = db.Column(db.DateTime(), nullable=False)
+
