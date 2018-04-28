@@ -1,11 +1,6 @@
 from prisonapp import *
-<<<<<<< HEAD
-from models import User, Comment, Visitation
-from models import User, Comment, Visitation, Prisoner
-=======
-from models import User, Comment, Visitation, Announcements
+from models import User, Comment, Visitation, Prisoner, Announcements
 
->>>>>>> Manage-Announcements
 
 def token_required(f):
     @wraps(f)
@@ -207,7 +202,7 @@ def announcements():
 
 #START OF ADMIN API
 
-@app.route('/api/addclerk', methods=['POST'])
+@app.route('/api/admin/addclerk', methods=['POST'])
 @token_required
 def add_clerk(current_user):
     if current_user.role_id != '0':
@@ -227,7 +222,7 @@ def add_clerk(current_user):
 
 
 
-@app.route('/api/addprisoner', methods=['POST'])
+@app.route('/api/admin/addprisoner', methods=['POST'])
 @token_required
 def add_prisoner(current_user):
     if current_user.role_id != '0':
