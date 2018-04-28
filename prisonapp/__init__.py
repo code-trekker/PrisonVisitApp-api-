@@ -13,11 +13,7 @@ app = Flask(__name__)
 server = Flask(__name__)
 
 CORS(app)
-<<<<<<< HEAD
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:1234@localhost/prisonapp'
-=======
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:sw33t890@localhost/prisonapp'
->>>>>>> Confirm-Registration-Request-Api
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['USE_SESSION_FOR_NEXT'] = True
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -30,15 +26,9 @@ import prisonapp.api
 #import prisonapp.server
 
 def createDB():
-<<<<<<< HEAD
     engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:1234@localhost') #connects to server
-=======
-    engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:sw33t890@localhost') #connects to server
->>>>>>> Confirm-Registration-Request-Api
     conn = engine.connect()
     conn.execute("commit")
-    #engine.execute("CREATE DATABASE IF NOT EXISTS sample") #create db
-    #engine.execute("USE sample") # select new
     conn.execute("create database prisonapp")
     conn.close()
 

@@ -12,11 +12,7 @@ class User(db.Model):
     lastname = db.Column(db.String(30))
     age = db.Column(db.String(5))
     contact = db.Column(db.String(15))
-<<<<<<< HEAD
-    address = db.Column(db.TEXT())
-=======
     address = db.Column(db.Text())
->>>>>>> Confirm-Registration-Request-Api
     birthday = db.Column(db.DATE)
     prisoner = db.Column(db.String(60))
     role_id=db.Column(db.String(2))
