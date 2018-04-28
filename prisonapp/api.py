@@ -210,8 +210,29 @@ def add_clerk(current_user):
     return jsonify({'message': 'Registered successfully!'})
 
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+@app.route('/api/addprisoner', methods=['POST'])
+@token_required
+def add_prisoner(current_user):
+    if current_user.role_id != '0':
+        return jsonify ({'message':'Cannot perform that function!'})
+
+    data = request.get_json()
+
+    new_prisoner = Prisoner(firstname=data['firstname'], middlename=data['middlename'], lastname=data['lastname'], birthday=data['birthday'], age=data['age'])
+
+    db.session.add(new_prisoner)
+    db.session.commit()
+
+    return jsonify({'message':'Added successfully!'})
+
+
+
+#END OF ADMIN API
+>>>>>>> Admin-add-prisoner-api
