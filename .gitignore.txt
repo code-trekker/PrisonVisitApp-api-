@@ -74,5 +74,6 @@ fabric.properties
 !.vscode/extensions.json
 .history
 
+*.pyc
 
 # End of https://www.gitignore.io/api/pycharm,visualstudiocode
