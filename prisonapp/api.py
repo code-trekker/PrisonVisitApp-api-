@@ -1,5 +1,5 @@
 from prisonapp import *
-from models import User, Comment, Visitation, Prisoner
+from models import User, Comment, Visitation, VisitationLogs
 
 def token_required(f):
     @wraps(f)
@@ -32,7 +32,7 @@ def register_user():
     hashed_password = generate_password_hash(data['password'], method='sha256')
 
     new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password_hash=hashed_password, firstname=data['firstname'], middlename=data['middlename'],
-                    lastname=data['lastname'], contact=data['contact'], address=data['address'], birthday=data['birthday'], prisoner=data['prisoner'], role_id=2, status=True,
+                    lastname=data['lastname'], contact=data['contact'], address=data['address'], birthday=data['birthday'], prisoner=data['prisoner'], role_id=2, status=False,
                     age=data['age'])
     db.session.add(new_user)
     db.session.commit()
@@ -124,37 +124,76 @@ def get_visitors(current_user):
         user_data['address'] = user.address
         user_data['birthday'] = user.birthday
         user_data['status'] = user.status
+        user_data['id'] = user.id
         res.append(user_data)
 
     return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
 
 
-@app.route('/api/clerk/prisoner_data', methods=['GET'])
+@app.route('/api/clerk/account_accept', methods=['POST'])
 @token_required
-def get_prisoners(current_user):
+def accept(current_user):
+    data = request.get_json()
+    user = User.query.filter_by(id=data['user_id']).first()
+
+    user.status = bool(1)
+    print user.id
+    db.session.commit()
+
+    return jsonify({'message':'Account Verified!'})
+
+@app.route('/api/clerk/manage_requests', methods=['GET'])
+@token_required
+def manage_requests(current_user):
+
     if current_user.role_id != '1':
         return jsonify ({'message':'Cannot perform that function!'})
 
-    prisoners = Prisoner.query.all()
-
+    visitations = Visitation.query.all()
     res = []
 
-    for prisoner in prisoners:
-        prisoner_data = {}
-        prisoner_data['firstname'] = prisoner.firstname
-        prisoner_data['middlename'] = prisoner.middlename
-        prisoner_data['lastname'] = prisoner.lastname
-        prisoner_data['birthday'] = prisoner.birthday
-        prisoner_data['age'] = prisoner.age
-        res.append(prisoner_data)
+    for visitation in visitations:
+        user_data = {}
+        user_data['vId'] = visitation.vId
+        user_data['nameP'] = visitation.nameP
+        user_data['date'] = visitation.date
+        user_data['numberOfVisitors'] = visitation.numberOfVisitors
+        user_data['status'] = visitation.status
+        user_data['id'] = visitation.id
 
-        return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
+        res.append(user_data)
 
+    return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
+
+
+@app.route('/api/clerk/schedule_accept', methods=['POST'])
+@token_required
+def schedule_accept(current_user):
+
+    data = request.get_json()
+    visitor = Visitation.query.filter_by(id=data['vis_id']).first()
+
+    # print data['user_id']
+    if str(data['response']) == 'yes':
+        visitor.status = 'APPROVED'
+        db.session.commit()
+        new_logs = VisitationLogs(log_vId=data['vis_id'], user_vId=data['userid'])
+        db.session.add(new_logs)
+        db.session.commit()
+        return jsonify({'message':'Scheduled!'})
+
+
+    elif str(data['response']) == 'no':
+        visitor.status = 'DECLINED'
+        db.session.commit()
+        return jsonify({'message':'Schedule Declined!'})
 
 #END OF CLERK API
 
 
+
 #START OF ADMIN API
+
 
 @app.route('/api/admin/addprisoner', methods=['POST'])
 @token_required
@@ -171,5 +210,27 @@ def add_prisoner(current_user):
 
     return jsonify({'message':'Added successfully!'})
 
+  
+@app.route('/api/admin/visit_logs', methods=['GET'])
+@token_required
+def visit_logs(current_user):
 
+    if current_user.role_id != '0':
+       return jsonify({'message': 'Cannot perform that function!'})
+
+    visitationlogs = VisitationLogs.query.all()
+    res = []
+
+    for visit_logs in visitationlogs:
+        user_data = {}
+        user_inf = User.query.filter_by(id=visit_logs.user_vId).first()
+        visittime = Visitation.query.filter_by(id=visit_logs.log_vId).first()
+        user_data['fname'] = user_inf.firstname
+        user_data['mname'] = user_inf.middlename
+        user_data['lname'] = user_inf.lastname
+        user_data['inmate'] = visittime.nameP
+        user_data['date'] = visittime.date
+        res.append(user_data)
+
+    return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
 #END OF ADMIN API
