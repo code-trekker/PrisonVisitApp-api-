@@ -156,24 +156,20 @@ def get_prisoners(current_user):
 
 #START OF ADMIN API
 
-@app.route('/api/addclerk', methods=['POST'])
+@app.route('/api/admin/addprisoner', methods=['POST'])
 @token_required
-def add_clerk(current_user):
+def add_prisoner(current_user):
     if current_user.role_id != '0':
         return jsonify ({'message':'Cannot perform that function!'})
 
     data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='sha256')
 
-    new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password_hash=hashed_password,
-                    firstname=data['firstname'], middlename=data['middlename'],
-                    lastname=data['lastname'], contact=data['contact'], address=data['address'],
-                    birthday=data['birthday'], role_id=1, status=True,
-                    age=data['age'])
-    db.session.add(new_user)
+    new_prisoner = Prisoner(firstname=data['firstname'], middlename=data['middlename'], lastname=data['lastname'], birthday=data['birthday'], age=data['age'])
+
+    db.session.add(new_prisoner)
     db.session.commit()
 
-    return jsonify({'message': 'Registered successfully!'})
+    return jsonify({'message':'Added successfully!'})
 
 
 #END OF ADMIN API
