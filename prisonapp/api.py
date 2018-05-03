@@ -24,7 +24,6 @@ def token_required(f):
     return decorated
 
 
-# START OF VISITOR API
 
 @app.route('/api/register', methods=['POST'])
 def register_user():
@@ -82,11 +81,7 @@ def post_comment(current_user):
 
     return jsonify({'message':'Comment submitted! Thank you for your opinion!'})
 
-
-#END OF VISITOR API
-
-
-#START OF CLERK API
+	
 @app.route('/api/clerk/get_users', methods=['GET'])
 @token_required
 def get_all_users(current_user):
@@ -188,11 +183,7 @@ def schedule_accept(current_user):
         db.session.commit()
         return jsonify({'message':'Schedule Declined!'})
 
-#END OF CLERK API
 
-
-
-#START OF ADMIN API
 
 
 @app.route('/api/admin/addprisoner', methods=['POST'])
@@ -233,4 +224,23 @@ def visit_logs(current_user):
         res.append(user_data)
 
     return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
-#END OF ADMIN API
+	
+@app.route('/api/user/visitors/', methods=['POST'])
+def visitors():
+    data = request.get_json()
+
+    newVisitor = Visitors(id=data['id'],firstname=data['firstname'], middlename=data['middlename'], lastname=data['lastname'], address=data['address'], contactno=data['contactno'], prisonername=data['prisonername'], date=datetime.datetime.now())
+    db.session.add(newVisitor)
+    db.session.commit()
+
+    return jsonify({'message':'Visitor verified'})
+
+@app.route('/announcements/', methods=['POST'])
+def announcements():
+    data = request.get_json()
+
+    newAnnouncement = Announcements(aid=data['aid'],title=data['title'], announcement=data['announcement'], date=datetime.datetime.now())
+    db.session.add(newAnnouncement)
+    db.session.commit()
+
+    return jsonify({'message':'Announcement successfully added!'})
