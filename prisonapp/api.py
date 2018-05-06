@@ -1,5 +1,5 @@
 from prisonapp import *
-from models import User, Comment, Visitation, VisitationLogs, Visitors, Announcements
+from models import User, Comment, Visitation, VisitationLogs, Visitors, Announcements, Prisoner
 
 def token_required(f):
     @wraps(f)
