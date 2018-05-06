@@ -51,3 +51,20 @@ class VisitationLogs(db.Model):
     log_vId = db.Column(db.Integer, db.ForeignKey('visitation.id'), nullable=False)
     user_vId = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
 
+class Announcements(db.Model):
+    __table__name = 'announcements'
+    aid = db.Column(db.Integer(), primary_key=True)
+    title = db.Column(db.TEXT(), nullable=False)
+    announcement = db.Column(db.TEXT(), nullable=False)
+    date = db.Column(db.DATE(), nullable=False)
+
+class Visitors(db.Model):
+    __table__name = 'visitors'
+    id = db.Column(db.Integer(), primary_key=True)
+    firstname = db.Column(db.String(60), nullable=False)
+    middlename = db.Column(db.String(60), nullable=False)
+    lastname = db.Column(db.String(60), nullable=False)
+    address = db.Column(db.TEXT())
+    contactno = db.Column(db.String(60), nullable=False)
+    prisonername = db.Column(db.String(60), nullable=False)
+    date = db.Column(db.DateTime(), nullable=False)
