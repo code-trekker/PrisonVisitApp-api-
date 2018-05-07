@@ -24,7 +24,7 @@ class Comment(db.Model):
     __tablename__ = 'comment'
     id = db.Column(db.Integer(), primary_key=True)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    content = db.Column(db.TEXT())
+    content = db.Column(db.Text())
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 class Prisoner(db.Model):
@@ -44,27 +44,3 @@ class Visitation(db.Model):
     date = db.Column(db.DATE, nullable=False)
     numberOfVisitors = db.Column(db.Integer(), nullable=False)
     status = db.Column(db.String(20),nullable=False)
-
-class VisitationLogs(db.Model):
-    __tablename__ = 'visitationlogs'
-    id = db.Column(db.Integer(), primary_key=True)
-    log_vId = db.Column(db.Integer, db.ForeignKey('visitation.id'), nullable=False)
-    user_vId = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
-
-class Announcements(db.Model):
-    __table__name = 'announcements'
-    aid = db.Column(db.Integer(), primary_key=True)
-    title = db.Column(db.TEXT(), nullable=False)
-    announcement = db.Column(db.TEXT(), nullable=False)
-    date = db.Column(db.DATE(), nullable=False)
-
-class Visitors(db.Model):
-    __table__name = 'visitors'
-    id = db.Column(db.Integer(), primary_key=True)
-    firstname = db.Column(db.String(60), nullable=False)
-    middlename = db.Column(db.String(60), nullable=False)
-    lastname = db.Column(db.String(60), nullable=False)
-    address = db.Column(db.TEXT())
-    contactno = db.Column(db.String(60), nullable=False)
-    prisonername = db.Column(db.String(60), nullable=False)
-    date = db.Column(db.DateTime(), nullable=False)
