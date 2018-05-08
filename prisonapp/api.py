@@ -149,21 +149,36 @@ def manage_requests(current_user):
     if current_user.role_id != '1':
         return jsonify ({'message':'Cannot perform that function!'})
 
-    visitations = Visitation.query.all()
+    visitations = Visitation.query.filter_by(status='PENDING').order_by(desc(Visitation.date)).all()
+    vis_approved = Visitation.query.filter((Visitation.status=="APPROVED"))
+
     res = []
 
     for visitation in visitations:
         user_data = {}
         user_data['vId'] = visitation.vId
         user_data['nameP'] = visitation.nameP
-        user_data['date'] = visitation.date
+        user_data['date'] = str(visitation.date)
         user_data['numberOfVisitors'] = visitation.numberOfVisitors
         user_data['status'] = visitation.status
         user_data['id'] = visitation.id
-
         res.append(user_data)
 
-    return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
+    tes = []
+
+    for visitation2 in vis_approved:
+        user_data = {}
+        user_data['vId'] = visitation2.vId
+        user_data['nameP'] = visitation2.nameP
+        user_data['date'] = str(visitation2.date)
+        user_data['numberOfVisitors'] = visitation2.numberOfVisitors
+        user_data['status'] = visitation2.status
+        user_data['id'] = visitation2.id
+        tes.append(user_data)
+
+
+
+    return jsonify({'status': 'ok', 'entries': res, 'count': len(res), 'entries2': tes, 'count2': len(tes)})
 
 
 @app.route('/api/clerk/schedule_accept', methods=['POST'])
