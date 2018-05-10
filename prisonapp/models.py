@@ -16,7 +16,7 @@ class User(db.Model):
     birthday = db.Column(db.DATE)
     prisoner = db.Column(db.String(60))
     role_id=db.Column(db.String(2))
-    status=db.Column(db.Boolean)
+    status=db.Column(db.String(20))
     comments = db.relationship('Comment', backref='user', lazy=True)
     visits = db.relationship('Visitation', backref='user', lazy=True)
 
@@ -35,6 +35,7 @@ class Prisoner(db.Model):
     lastname = db.Column(db.String(30))
     birthday = db.Column(db.DATE)
     age = db.Column(db.String(5))
+    crime = db.Column(db.String(60))
 
 class Visitation(db.Model):
     __tablename__ = 'visitation'
@@ -53,7 +54,7 @@ class VisitationLogs(db.Model):
 
 class Announcements(db.Model):
     __table__name = 'announcements'
-    aid = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.TEXT(), nullable=False)
     announcement = db.Column(db.TEXT(), nullable=False)
     date = db.Column(db.DATE(), nullable=False)
@@ -67,4 +68,5 @@ class Visitors(db.Model):
     address = db.Column(db.TEXT())
     contactno = db.Column(db.String(60), nullable=False)
     prisonername = db.Column(db.String(60), nullable=False)
-    date = db.Column(db.DateTime(), nullable=False)
+    relationship = db.Column(db.String(60), nullable=False)
+    date = db.Column(db.DATE(), nullable=False)
