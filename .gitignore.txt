@@ -76,6 +76,4 @@ fabric.properties
 
 *.pyc
 
-*.pyc
-
 # End of https://www.gitignore.io/api/pycharm,visualstudiocode
