@@ -1,5 +1,5 @@
 from prisonapp import *
-from models import User, Comment, Visitation, VisitationLogs, Visitors, Announcements, Prisoner
+from models import User, Comment, Visitation, VisitationLogs, Visitors, Announcements, Prisoner, NewsUpdate
 
 def token_required(f):
     @wraps(f)
@@ -429,3 +429,33 @@ def edit_announcement(current_user):
     db.session.commit()
 
     return jsonify({'message': 'Edit successful!'})
+
+
+@app.route('/api/admin/newsupdate', methods=['POST'])
+@token_required
+def newsupdate(current_user):
+    data = request.get_json()
+
+    newNewsUpdate = NewsUpdate(title=data['title'], newsupdate=data['newsupdate'], date=datetime.datetime.now())
+    db.session.add(newNewsUpdate)
+    db.session.commit()
+
+    return jsonify({'message':'Announcement successfully added!'})
+
+@app.route('/api/view_newsupdate', methods=['GET'])
+def view_newsupdate():
+
+    news_update = NewsUpdate.query.all()
+
+    res = []
+
+    for news in news_update:
+        news_data = {}
+        news_data['id'] = news.id
+        news_data['title'] = news.title
+        news_data['newsupdate'] = news.newsupdate
+        news_data['date'] = str(news.date)
+
+        res.append(news_data)
+
+    return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
