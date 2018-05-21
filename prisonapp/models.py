@@ -70,3 +70,10 @@ class Visitors(db.Model):
     prisonername = db.Column(db.String(60), nullable=False)
     relationship = db.Column(db.String(60), nullable=False)
     date = db.Column(db.DATE(), nullable=False)
+
+class NewsUpdate(db.Model):
+    __table__name = 'news_update'
+    id = db.Column(db.Integer(), primary_key=True)
+    title = db.Column(db.TEXT(), nullable=False)
+    newsupdate = db.Column(db.TEXT(), nullable=False)
+    date = db.Column(db.DATE(), nullable=False)
