@@ -25,7 +25,8 @@ class Comment(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.TEXT())
-    date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    date = db.Column(db.DATE(), nullable=False)
+
 
 class Prisoner(db.Model):
     __tablename__ = 'prisoner'
@@ -51,6 +52,9 @@ class VisitationLogs(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     log_vId = db.Column(db.Integer, db.ForeignKey('visitation.id'), nullable=False)
     user_vId = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    accepter_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    timein = db.Column(db.String(10), nullable=True)
+    timeout = db.Column(db.String(10), nullable=True)
 
 class Announcements(db.Model):
     __table__name = 'announcements'
