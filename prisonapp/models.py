@@ -77,3 +77,4 @@ class NewsUpdate(db.Model):
     title = db.Column(db.TEXT(), nullable=False)
     newsupdate = db.Column(db.TEXT(), nullable=False)
     date = db.Column(db.DATE(), nullable=False)
+    imageSource = db.Column(db.Text())

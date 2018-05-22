@@ -1,3 +1,5 @@
+
+
 from prisonapp import *
 from models import User, Comment, Visitation, VisitationLogs, Visitors, Announcements, Prisoner, NewsUpdate
 
@@ -436,16 +438,16 @@ def edit_announcement(current_user):
 def newsupdate(current_user):
     data = request.get_json()
 
-    newNewsUpdate = NewsUpdate(title=data['title'], newsupdate=data['newsupdate'], date=datetime.datetime.now())
+    newNewsUpdate = NewsUpdate(title=data['newsTitle'], newsupdate=data['articleContent'], imageSource= data['imgSrc'], date=datetime.datetime.now())
     db.session.add(newNewsUpdate)
     db.session.commit()
 
-    return jsonify({'message':'Announcement successfully added!'})
+    return jsonify({'message':'Article submitted!', 'status':'ok'})
 
 @app.route('/api/view_newsupdate', methods=['GET'])
 def view_newsupdate():
 
-    news_update = NewsUpdate.query.all()
+    news_update = NewsUpdate.query.order_by(desc(NewsUpdate.id)).all()
 
     res = []
 
@@ -455,6 +457,7 @@ def view_newsupdate():
         news_data['title'] = news.title
         news_data['newsupdate'] = news.newsupdate
         news_data['date'] = str(news.date)
+        news_data['imgSrc'] = news.imageSource
 
         res.append(news_data)
 
