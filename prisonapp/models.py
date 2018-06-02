@@ -6,7 +6,7 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     public_id = db.Column(db.String(50), unique=True)
     username=db.Column(db.String(32), unique=True,index=True)
-    password_hash=db.Column(db.String(128))
+    password_hash=db.Column(db.String(1000))
     firstname = db.Column(db.String(30))
     middlename = db.Column(db.String(30))
     lastname = db.Column(db.String(30))
@@ -25,7 +25,8 @@ class Comment(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.TEXT())
-    date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    date = db.Column(db.DATE(), nullable=False)
+
 
 class Prisoner(db.Model):
     __tablename__ = 'prisoner'
@@ -43,6 +44,7 @@ class Visitation(db.Model):
     vId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     nameP = db.Column(db.String(36), nullable=False)
     date = db.Column(db.DATE, nullable=False)
+    relationship = db.Column(db.String(36))
     numberOfVisitors = db.Column(db.Integer(), nullable=False)
     status = db.Column(db.String(20),nullable=False)
 
@@ -51,6 +53,9 @@ class VisitationLogs(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     log_vId = db.Column(db.Integer, db.ForeignKey('visitation.id'), nullable=False)
     user_vId = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    accepter_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    timein = db.Column(db.String(10), nullable=True)
+    timeout = db.Column(db.String(10), nullable=True)
 
 class Announcements(db.Model):
     __table__name = 'announcements'
@@ -69,4 +74,18 @@ class Visitors(db.Model):
     contactno = db.Column(db.String(60), nullable=False)
     prisonername = db.Column(db.String(60), nullable=False)
     relationship = db.Column(db.String(60), nullable=False)
+    date = db.Column(db.DATE(), nullable=False)
+
+class Tokens(db.Model):
+    __tablename__ = 'tokens'
+    tid = db.Column(db.Integer(), primary_key=True)
+    uid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    token = db.Column(db.String(220))
+    ttl = db.Column(db.DateTime(timezone=True))    
+
+class NewsUpdate(db.Model):
+    __table__name = 'news_update'
+    id = db.Column(db.Integer(), primary_key=True)
+    title = db.Column(db.TEXT(), nullable=False)
+    newsupdate = db.Column(db.TEXT(), nullable=False)
     date = db.Column(db.DATE(), nullable=False)

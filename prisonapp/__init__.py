@@ -5,15 +5,16 @@ from flask_httpauth import HTTPBasicAuth
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
-from flask_cors import CORS
-from datetime import date
-
+from flask_cors import CORS, cross_origin
+from datetime import date, timedelta
+from dateutil import parser
+import time, pytz
 
 app = Flask(__name__)
-server = Flask(__name__)
 
-CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:1234@localhost/prisonapp'
+app.url_map.strict_slashes = False
+cors = CORS(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['USE_SESSION_FOR_NEXT'] = True
 app.config['CORS_HEADERS'] = 'Content-Type'
