@@ -40,7 +40,7 @@ def register_user():
                         firstname=data['firstname'], middlename=data['middlename'],
                         lastname=data['lastname'], contact=data['contact'], address=data['address'],
                         birthday=data['birthday'], prisoner=data['prisoner'], role_id=2, status="PENDING",
-                        age=data['age'])
+                        age=data['age'], proof1 = data['proof1'], proof2 = data['proof2'])
         db.session.add(new_user)
         db.session.commit()
 
@@ -194,6 +194,8 @@ def get_visitors(current_user):
         user_data['prisoner'] = user.prisoner
         user_data['status'] = user.status
         user_data['id'] = user.id
+        user_data['proof1'] = user.proof1
+        user_data['proof2'] = user.proof2
         res.append(user_data)
 
     return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})
@@ -222,6 +224,8 @@ def get_visitors_admin(current_user):
         user_data['prisoner'] = user.prisoner
         user_data['status'] = user.status
         user_data['id'] = user.id
+        user_data['proof1'] = user.proof1
+        user_data['proof2'] = user.proof2
         res.append(user_data)
 
     return jsonify({'status': 'ok', 'entries': res, 'count': len(res)})

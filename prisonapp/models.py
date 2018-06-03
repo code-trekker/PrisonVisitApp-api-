@@ -15,6 +15,8 @@ class User(db.Model):
     address = db.Column(db.TEXT())
     birthday = db.Column(db.DATE)
     prisoner = db.Column(db.String(60))
+    proof1 = db.Column(db.String(120))
+    proof2 = db.Column(db.String(120))
     role_id=db.Column(db.String(2))
     status=db.Column(db.String(20))
     comments = db.relationship('Comment', backref='user', lazy=True)
