@@ -1,5 +1,5 @@
 aniso8601==2.0.0
-arrow==0.12.1
+arrow==0.15.1
 asn1crypto==0.24.0
 backports-abc==0.5
 backports.functools-lru-cache==1.5
